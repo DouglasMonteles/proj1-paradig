@@ -10,7 +10,11 @@ import System.Exit (exitWith, ExitCode(..))
 
 import Validators (
     isLengthCorrect,
-    isSameString
+    isSameString,
+    isAnyWordInRightPlace,
+    isAnyWordInWrongPlace,
+    obtainIndexesOfSameLetter,
+    obtainLettersInWrongPlace
     )
 
 initGame :: String -> Int -> IO ()
@@ -34,9 +38,35 @@ initGame answer attempts =
             then do
                 putStrLn "Acertou mizeravi!"
             else do
-                putStrLn "Palpite incorreto :("
-                initGame answer (attempts + 1)
+                if isAnyWordInRightPlace word answer
+                    then do
+                        putStrLn "Alguma letra está no lugar correto!"
+                        putStrLn $ "As letras iguais estão nas posições: " ++ show (obtainIndexesOfSameLetter word answer)
+                        displayAnswerSituation answer (obtainIndexesOfSameLetter word answer)
+                    else do
+                        putStrLn "Palpite incorreto :("
+                        -- initGame answer (attempts + 1)
+                
+                if isAnyWordInWrongPlace word answer
+                    then do
+                        putStrLn "Alguma letra está no lugar errado!"
+                        putStrLn $ "As letras que estão no lugar errado são: " ++ (obtainLettersInWrongPlace word answer)
+                    else do
+                        putStrLn "Não há letras no lugar errado!"
 
         putStrLn "A resposta correta é:"
         putStrLn answer
         exitWith ExitSuccess
+
+displayAnswerSituation :: String -> [Int] -> IO ()
+displayAnswerSituation answer indexes =
+  do 
+    let chars = zip [0..] answer in
+        mapM_ (printIndexedChar indexes) chars;
+    putStrLn ""
+
+printIndexedChar :: [Int] -> (Int, Char) -> IO ()
+printIndexedChar indexes (i, c) =
+  if i `elem` indexes
+    then putChar c
+    else putChar '_'

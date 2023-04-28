@@ -14,8 +14,8 @@ readString = do x <- readChar
                     return (x:xs)
 
 {-
-    hSetEcho: When echoing is enabled, characters typed by the user are printed 
-    to the console as they are typed. When echoing is disabled, the characters 
+    hSetEcho: When hSetEcho is enabled, characters typed by the user are printed 
+    to the console as they are typed. When hSetEcho is disabled, the characters 
     typed by the user are not printed to the console.
         @param False: hidden the user input
         @param True: shows the user input
