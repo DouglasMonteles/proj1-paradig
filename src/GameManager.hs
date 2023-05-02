@@ -32,7 +32,7 @@ initGame answer attempts =
                 putStrLn "Sim!"
             else do
                 putStrLn "A palavra digitada não possui o mesmo tamanho da palavra a ser adivinhada! Tente novamente."
-                initGame answer (attempts + 1)
+                initGame answer (attempts + 0)
 
         if isSameString word answer
             then do
@@ -44,15 +44,17 @@ initGame answer attempts =
                         putStrLn $ "As letras iguais estão nas posições: " ++ show (obtainIndexesOfSameLetter word answer)
                         displayAnswerSituation answer (obtainIndexesOfSameLetter word answer)
                     else do
-                        putStrLn "Palpite incorreto :("
+                        putStrLn "As letras em comum não estão na mesma posição"
                         -- initGame answer (attempts + 1)
                 
                 if isAnyWordInWrongPlace word answer
                     then do
-                        putStrLn "Alguma letra está no lugar errado!"
+                        putStrLn "As letras em comum estão em posições diferentes!"
                         putStrLn $ "As letras que estão no lugar errado são: " ++ (obtainLettersInWrongPlace word answer)
+                        initGame answer (attempts + 1)
                     else do
-                        putStrLn "Não há letras no lugar errado!"
+                        putStrLn "Não há letras em comum"
+                        initGame answer (attempts + 1)
 
         putStrLn "A resposta correta é:"
         putStrLn answer
